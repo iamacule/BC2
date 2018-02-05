@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="vn.mran.bc1">
+    package="vn.mran.bc2">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -11,7 +11,7 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity"
+        <activity android:name="vn.mran.bc2.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,13 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.ChooserActivity"
+        <activity android:name="vn.mran.bc2.activity.ChooserActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.SettingActivity"
+        <activity android:name="vn.mran.bc2.activity.SettingActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.BattleActivity"
+        <activity android:name="vn.mran.bc2.activity.BattleActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.PlayActivity"
+        <activity android:name="vn.mran.bc2.activity.PlayActivity"
             android:screenOrientation="portrait"/>
     </application>
 
