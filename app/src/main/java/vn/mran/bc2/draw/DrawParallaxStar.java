@@ -37,7 +37,7 @@ public class DrawParallaxStar extends View {
     }
 
     private void init(Context context) {
-        star = BitmapFactory.decodeResource(context.getResources(), R.drawable.star_flip);
+        star = BitmapFactory.decodeResource(context.getResources(), R.drawable.fire_slot);
 
         new ParallaxStarThread().start();
         new RandomStarThread().start();

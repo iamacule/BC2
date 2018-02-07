@@ -1,13 +1,17 @@
 package vn.mran.bc2.util.toast;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.plattysoft.leonids.ParticleSystem;
+
 import vn.mran.bc2.R;
+import vn.mran.bc2.util.Task;
 import vn.mran.bc2.widget.CustomTextView;
 
 /**
@@ -19,6 +23,7 @@ import vn.mran.bc2.widget.CustomTextView;
  */
 public class ToastInfo {
     private Toast toast;
+    private CustomTextView text;
 
     public ToastInfo(Activity activity, String message) {
         create(activity, message);
@@ -49,11 +54,11 @@ public class ToastInfo {
         toast.setGravity(Gravity.CENTER, 0, 0);
     }
 
-    private void create(Activity activity, String message, int color) {
+    private void create(final Activity activity, String message, final int color) {
         LayoutInflater inflater = activity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.toast,
                 (ViewGroup) activity.findViewById(R.id.toast_parent));
-        CustomTextView text = (CustomTextView) layout.findViewById(R.id.toast_message);
+        text = (CustomTextView) layout.findViewById(R.id.toast_message);
         text.setTextColor(color);
         text.setText(message);
         text.setTextSize(activity.getResources().getDimension(R.dimen.result_text_size));
@@ -62,5 +67,16 @@ public class ToastInfo {
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.setGravity(Gravity.CENTER, 0, 0);
+
+        Task.postDelay(new Runnable() {
+            @Override
+            public void run() {
+                if (color== Color.GREEN){
+                    new ParticleSystem(activity, 100, R.drawable.star, 2000)
+                            .setSpeedRange(0.1f, 0.25f)
+                            .oneShot(text, 100);
+                }
+            }
+        },700);
     }
 }

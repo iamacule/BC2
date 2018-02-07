@@ -59,7 +59,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
                 ps.setRotationSpeedRange(90, 180);
                 ps.setAcceleration(0.00013f, 90);
                 ps.setFadeOut(200, new AccelerateInterpolator());
-                ps.emit(findViewById(R.id.lnFire1), 100, 60000);
+                ps.emit(findViewById(R.id.lnFire1), 100, 360000);
 
 
                 ParticleSystem ps2 = new ParticleSystem(ChooserActivity.this, 100, R.drawable.fire_slot, 1000);
@@ -68,9 +68,9 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
                 ps2.setRotationSpeedRange(90, 180);
                 ps2.setAcceleration(0.00013f, 90);
                 ps2.setFadeOut(200, new AccelerateInterpolator());
-                ps2.emit(findViewById(R.id.lnFire2), 100, 60000);
+                ps2.emit(findViewById(R.id.lnFire2), 100, 360000);
             }
-        },1000);
+        }, 1000);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgPlay:
-//                startActivity(PlayActivity.class);
+                startActivity(PlayActivity.class);
                 break;
             case R.id.imgExit:
                 finish();

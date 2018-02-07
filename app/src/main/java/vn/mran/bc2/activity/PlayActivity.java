@@ -30,7 +30,7 @@ import vn.mran.bc2.widget.CustomTextView;
  * Created by Mr An on 18/12/2017.
  */
 
-public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpdate, View.OnClickListener, PlayView, Rule.OnFireBaseDataBattleChanged {
+public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpdate, View.OnClickListener, PlayView, Rule.OnFireBaseDataChanged {
     private static final int MONEY_VALUE = 100;
     private final String TAG = getClass().getSimpleName();
 
@@ -56,11 +56,11 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
     private Bitmap bpSoundOff;
     private Bitmap bpBack;
 
-    private Bitmap[] bpTopArray = new Bitmap[6];
+    private Bitmap[] bpChooserArray = new Bitmap[6];
+    private Bitmap[] bpResultArray = new Bitmap[6];
     private int[] resultArrays;
 
     private boolean isEnableMainRuleBySecretKey = false;
-    private boolean isEnableRuleOfflineBySecretKey = false;
 
     private int currentMoney = 0;
 
@@ -83,7 +83,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
 
     @Override
     public void initValue() {
-        Rule.getInstance().setOnFireBaseDataBattleChanged(this);
+        Rule.getInstance().setOnFireBaseDataChanged(this);
         presenter = new PlayPresenter(this);
         drawParallaxStar.setStarSize((int) screenWidth / 10);
 
@@ -93,12 +93,19 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         TouchEffect.addAlpha(imgBack);
         TouchEffect.addAlpha(imgSound);
 
-        bpTopArray[0] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.bau), screenWidth / 4);
-        bpTopArray[1] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.cua), screenWidth / 4);
-        bpTopArray[2] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.tom), screenWidth / 4);
-        bpTopArray[3] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.ca), screenWidth / 4);
-        bpTopArray[4] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.ga), screenWidth / 4);
-        bpTopArray[5] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.nai), screenWidth / 4);
+        bpChooserArray[0] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.bau), screenWidth / 4);
+        bpChooserArray[1] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.cua), screenWidth / 4);
+        bpChooserArray[2] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.tom), screenWidth / 4);
+        bpChooserArray[3] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.ca), screenWidth / 4);
+        bpChooserArray[4] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.ga), screenWidth / 4);
+        bpChooserArray[5] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.nai), screenWidth / 4);
+
+        bpResultArray[0] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.bau), screenWidth / 4);
+        bpResultArray[1] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.cua), screenWidth / 4);
+        bpResultArray[2] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.tom), screenWidth / 4);
+        bpResultArray[3] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.ca), screenWidth / 4);
+        bpResultArray[4] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.ga), screenWidth / 4);
+        bpResultArray[5] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.nai), screenWidth / 4);
 
         initUIFromFirebase();
 
@@ -108,7 +115,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
             @Override
             public void onChoose(int[] valueArrays) {
                 Log.d(TAG, "Changed");
-                presenter.onChoose(valueArrays);
+                presenter.onChoose(valueArrays, resultArrays);
             }
 
             @Override
@@ -140,81 +147,66 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
 
     private void initUIFromFirebase() {
         //Text
-        updateText(preferences.getStringValue(PrefValue.TEXT_PLAY, PrefValue.DEFAULT_TEXT));
+        updateText(Rule.getInstance().getText());
 
         //Main rule
         String ruleMainStatus = preferences.getStringValue(PrefValue.RULE_MAIN_PLAY_STATUS, PrefValue.DEFAULT_STATUS);
         if (ruleMainStatus.equals(Rule.getInstance().STATUS_ON)) {
             if (isEnableMainRuleBySecretKey) {
-                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 10));
+                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 12));
             } else {
-                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 10));
+                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 12));
             }
         } else {
-            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 10));
+            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 12));
 
         }
         imgBack.setImageBitmap(bpBack);
 
-        //Child rule
-        String ruleChildStatus = preferences.getStringValue(PrefValue.RULE_CHILD_PLAY_STATUS, PrefValue.DEFAULT_STATUS);
-        if (ruleChildStatus.equals(Rule.getInstance().STATUS_ON)) {
-            switch (preferences.getIntValue(PrefValue.RULE_CHILD_PLAY_RULE, PrefValue.DEFAULT_RULE)) {
-                case 1:
-                    bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_1), screenWidth / 10);
-                    bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_1), screenWidth / 10);
-                    break;
-                case 2:
-                    bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_2), screenWidth / 10);
-                    bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_2), screenWidth / 10);
-                    break;
-            }
-        } else {
-            bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 10);
-            bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 10);
-        }
-
-        //Rule offline
-        updateRuleOffline();
-
-        if (preferences.getBooleanValue(PrefValue.SETTING_SOUND, true)) {
-            imgSound.setImageBitmap(bpSoundOn);
-        } else {
-            imgSound.setImageBitmap(bpSoundOff);
-        }
+        updateSoundImage();
     }
 
+    private void updateSoundImage() {
+        //Child rule
 
-    private void updateRuleOffline() {
-        Task.startNewBackGroundThread(new Thread(new Runnable() {
+        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 12);
+        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 12);
+
+        if (Rule.getInstance().isOnline()) {
+            String ruleChildStatus = preferences.getStringValue(PrefValue.RULE_CHILD_PLAY_STATUS, PrefValue.DEFAULT_STATUS);
+            if (ruleChildStatus.equals(Rule.getInstance().STATUS_ON)) {
+                switch (Rule.getInstance().getRuleChildRule()) {
+                    case 1:
+                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_1), screenWidth / 12);
+                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_1), screenWidth / 12);
+                        break;
+                    case 2:
+                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_2), screenWidth / 12);
+                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_2), screenWidth / 12);
+                        break;
+                    case 3:
+                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_3), screenWidth / 12);
+                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_3), screenWidth / 12);
+                        break;
+                }
+            }
+        }
+
+        Task.runOnUIThread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (preferences.getBooleanValue(PrefValue.SETTING_SOUND, true)) {
+                    imgSound.setImageBitmap(bpSoundOn);
+                } else {
+                    imgSound.setImageBitmap(bpSoundOff);
                 }
-                Task.runOnUIThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //Rule offline
-                        if (preferences.getStringValue(PrefValue.RULE_OFFLINE_PLAY_STATUS).equals(Rule.getInstance().STATUS_ON)) {
-                            if (isEnableRuleOfflineBySecretKey) {
-                                drawPlay.setBpPlate(BitmapFactory.decodeResource(getResources(), R.drawable.plate_offline_on_on));
-                            } else {
-                                drawPlay.setBpPlate(BitmapFactory.decodeResource(getResources(), R.drawable.plate_offline_on_off));
-                            }
-                        } else {
-                            drawPlay.setBpPlate(BitmapFactory.decodeResource(getResources(), R.drawable.plate));
-                        }
-                    }
-                });
             }
-        }));
+        });
     }
 
     @Override
     public void initAction() {
+        drawPlay.initialize((int) screenWidth, (int) screenHeight);
         drawPlay.setOnDrawLidUpdate(this);
 
         imgAction.setOnClickListener(this);
@@ -230,7 +222,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                 switch (v.getId()) {
                     case R.id.btnEnableRuleMain:
                         Log.d(TAG, "btnEnableRuleMain clicked");
-                        if (Rule.getInstance().getRuleMainPlayStatus().equals(Rule.getInstance().STATUS_ON)) {
+                        if (Rule.getInstance().getRuleMainStatus().equals(Rule.getInstance().STATUS_ON)) {
                             if (!isEnableMainRuleBySecretKey) {
                                 isEnableMainRuleBySecretKey = true;
                                 bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 10));
@@ -245,7 +237,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                         break;
                     case R.id.btnDisableRuleMain:
                         Log.d(TAG, "btnDisableRuleMain clicked");
-                        if (Rule.getInstance().getRuleMainPlayStatus().equals(Rule.getInstance().STATUS_ON)) {
+                        if (Rule.getInstance().getRuleMainStatus().equals(Rule.getInstance().STATUS_ON)) {
                             if (isEnableMainRuleBySecretKey) {
                                 setPreviousRule();
                                 isEnableMainRuleBySecretKey = false;
@@ -259,63 +251,30 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                         imgBack.setImageBitmap(bpBack);
                         Log.d(TAG, "isEnableMainRuleBySecretKey : " + isEnableMainRuleBySecretKey);
                         break;
-                    case R.id.btnEnableRuleOffline:
-                        if (Rule.getInstance().getRuleOfflinePlayStatus().equals(Rule.getInstance().STATUS_ON)) {
-                            Log.d(TAG, "Internet : " + presenter.isOnline());
-                            if (!presenter.isOnline()) {
-                                if (!isEnableRuleOfflineBySecretKey) {
-                                    isEnableRuleOfflineBySecretKey = true;
-                                }
-                            }
-                        } else {
-                            isEnableRuleOfflineBySecretKey = false;
-                            setPreviousRule();
-                        }
-                        updateRuleOffline();
+                    case R.id.btnEnableRule3:
+                        Log.d(TAG, "Enable rule 3");
+                        Rule.getInstance().setRuleChildRule(3);
+                        updateSoundImage();
                         break;
-                    case R.id.btnDisableRuleOffline:
-                        if (Rule.getInstance().getRuleOfflinePlayStatus().equals(Rule.getInstance().STATUS_ON)) {
-                            Log.d(TAG, "Internet : " + presenter.isOnline());
-                            if (!presenter.isOnline()) {
-                                if (isEnableRuleOfflineBySecretKey) {
-                                    isEnableRuleOfflineBySecretKey = false;
-                                }
-                            }
-                        } else {
-                            isEnableRuleOfflineBySecretKey = false;
-                            setPreviousRule();
-                        }
-                        updateRuleOffline();
+                    case R.id.btnDisableRule3:
+                        Log.d(TAG, "Disable rule 3");
+                        Rule.getInstance().resetRuleChild();
+                        updateSoundImage();
                         break;
                 }
             }
         };
-        findViewById(R.id.btnEnableRuleMain).setOnClickListener(onDoubleClickListener);
-        findViewById(R.id.btnEnableRuleOffline).setOnClickListener(onDoubleClickListener);
-        findViewById(R.id.btnDisableRuleMain).setOnClickListener(onDoubleClickListener);
-        findViewById(R.id.btnDisableRuleOffline).setOnClickListener(onDoubleClickListener);
+        animalChooserLayout.getBtnDisableRuleMain().setOnClickListener(onDoubleClickListener);
+        animalChooserLayout.getBtnDisableRule3().setOnClickListener(onDoubleClickListener);
+        animalChooserLayout.getBtnEnableRuleMain().setOnClickListener(onDoubleClickListener);
+        animalChooserLayout.getBtnEnableRule3().setOnClickListener(onDoubleClickListener);
 
         //Set result at first time
         setResult();
-
-        disableLoading();
-    }
-
-    private void disableLoading() {
-        Task.postDelay(new Runnable() {
-            @Override
-            public void run() {
-                findViewById(R.id.lnLoad).setVisibility(View.GONE);
-            }
-        },2000);
     }
 
     private void setPreviousRule() {
-        if (isEnableRuleOfflineBySecretKey) {
-            Rule.getInstance().setCurrentRulePlay(Rule.getInstance().RULE_OFFLINE);
-        } else {
-            Rule.getInstance().setCurrentRulePlay(Rule.getInstance().RULE_NORMAL);
-        }
+        Rule.getInstance().setCurrentRule(Rule.getInstance().RULE_NORMAL);
     }
 
     @Override
@@ -333,9 +292,9 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         Log.d(TAG, "isLidOpened : " + isOpened);
         if (isOpened) {
             minusNumberOffRule();
-            presenter.executeResult();
             txtAction.setText(getString(R.string.shake));
-            animalChooserLayout.reset();
+            animalChooserLayout.showResult();
+            presenter.executeResult();
         } else {
             setResult();
             drawPlay.startAnimation(MyAnimation.shake(this));
@@ -344,23 +303,19 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
     }
 
     private void minusNumberOffRule() {
-        Rule.getInstance().minusRuleNumberPlay(Rule.getInstance().RULE_NORMAL);
+        Rule.getInstance().minusRuleNumber(Rule.getInstance().RULE_NORMAL);
         if (isEnableMainRuleBySecretKey)
-            Rule.getInstance().minusRuleNumberPlay(Rule.getInstance().RULE_MAIN);
-        if (isEnableRuleOfflineBySecretKey)
-            Rule.getInstance().minusRuleNumberPlay(Rule.getInstance().RULE_OFFLINE);
+            Rule.getInstance().minusRuleNumber(Rule.getInstance().RULE_MAIN);
     }
 
     /**
      * Set result from rule
      */
     private void setResult() {
-        resultArrays = Rule.getInstance().getResultPlay();
-        for (int result : resultArrays) {
-            Log.d(TAG, "Result : " + result);
-        }
+        resultArrays = Rule.getInstance().getResult();
         drawPlay.setResultArrays(resultArrays);
-        presenter.calculateResult(resultArrays);
+        animalChooserLayout.updateResult(bpResultArray[resultArrays[0]], bpResultArray[resultArrays[1]], bpResultArray[resultArrays[2]]);
+        animalChooserLayout.hideResult();
     }
 
     @Override
@@ -392,8 +347,8 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                     @Override
                     public void run() {
                         if (isEnableMainRuleBySecretKey) {
-                            Rule.getInstance().setRuleMainPlayGoneArrays(Rule.getInstance().RULE_MAIN_GONE_1);
-                            Rule.getInstance().setCurrentRulePlay(Rule.getInstance().RULE_MAIN);
+                            Rule.getInstance().setRuleMainGoneArrays(Rule.getInstance().RULE_MAIN_GONE_1);
+                            Rule.getInstance().setCurrentRule(Rule.getInstance().RULE_MAIN);
                         } else {
                             Log.d(TAG, "Rule Main disabled");
                         }
@@ -407,8 +362,8 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                     @Override
                     public void run() {
                         if (isEnableMainRuleBySecretKey) {
-                            Rule.getInstance().setRuleMainPlayGoneArrays(Rule.getInstance().RULE_MAIN_GONE_2);
-                            Rule.getInstance().setCurrentRulePlay(Rule.getInstance().RULE_MAIN);
+                            Rule.getInstance().setRuleMainGoneArrays(Rule.getInstance().RULE_MAIN_GONE_2);
+                            Rule.getInstance().setCurrentRule(Rule.getInstance().RULE_MAIN);
                         } else {
                             Log.d(TAG, "Rule Main disabled");
                         }
@@ -421,8 +376,8 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                     @Override
                     public void run() {
                         if (isEnableMainRuleBySecretKey) {
-                            Rule.getInstance().setRuleMainPlayGoneArrays(Rule.getInstance().RULE_MAIN_GONE_3);
-                            Rule.getInstance().setCurrentRulePlay(Rule.getInstance().RULE_MAIN);
+                            Rule.getInstance().setRuleMainGoneArrays(Rule.getInstance().RULE_MAIN_GONE_3);
+                            Rule.getInstance().setCurrentRule(Rule.getInstance().RULE_MAIN);
                         } else {
                             Log.d(TAG, "Rule Main disabled");
                         }
@@ -472,10 +427,11 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
     @Override
     public void onNetworkChanged(boolean isEnable) {
         Log.d(TAG, "Network : " + isEnable);
-        if (isEnable) {
-            isEnableRuleOfflineBySecretKey = false;
-        }
-        updateText(preferences.getStringValue(PrefValue.TEXT, PrefValue.DEFAULT_TEXT));
+        Rule.getInstance().setOnline(isEnable);
+        updateSoundImage();
+
+        //TODO ????
+//        updateText(preferences.getStringValue(PrefValue.TEXT, PrefValue.DEFAULT_TEXT));
     }
 
     @Override
@@ -485,6 +441,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
 
     @Override
     public void onResultExecute(int tong) {
+        Log.d(TAG, "CurrentMoney : " + currentMoney);
         currentMoney = currentMoney + tong;
         if (currentMoney <= 0) {
             currentMoney = 0;

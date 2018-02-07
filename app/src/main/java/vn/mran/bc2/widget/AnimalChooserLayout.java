@@ -1,8 +1,11 @@
 package vn.mran.bc2.widget;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import vn.mran.bc2.R;
 import vn.mran.bc2.util.ResizeBitmap;
@@ -47,6 +50,9 @@ public class AnimalChooserLayout implements View.OnClickListener {
     private CustomTextView txtCua;
     private CustomTextView txtTom;
 
+    private FrameLayout frResult;
+    private LinearLayout lnChooser;
+
     private int valueNai = 0;
     private int valueBau = 0;
     private int valueGa = 0;
@@ -57,12 +63,26 @@ public class AnimalChooserLayout implements View.OnClickListener {
     private int maxValue = 0;
     private int currentValue = 0;
 
+    private LinearLayout btnDisableRuleMain;
+    private LinearLayout btnDisableRule3;
+    private LinearLayout btnEnableRuleMain;
+    private LinearLayout btnEnableRule3;
+
     public void setOnAnimalChooseListener(OnAnimalChooseListener onAnimalChooseListener) {
         this.onAnimalChooseListener = onAnimalChooseListener;
     }
 
     public AnimalChooserLayout(View view, int screenWidth) {
         this.view = view;
+
+        lnChooser = view.findViewById(R.id.lnChooser);
+        frResult = view.findViewById(R.id.frResult);
+
+
+        btnDisableRuleMain = (LinearLayout) view.findViewById(R.id.btnDisableRuleMain);
+        btnDisableRule3 = (LinearLayout) view.findViewById(R.id.btnDisableRule3);
+        btnEnableRuleMain = (LinearLayout) view.findViewById(R.id.btnEnableRuleMain);
+        btnEnableRule3 = (LinearLayout) view.findViewById(R.id.btnEnableRule3);
 
         imgNai = view.findViewById(R.id.imgNai);
         imgBau = view.findViewById(R.id.imgBau);
@@ -205,5 +225,37 @@ public class AnimalChooserLayout implements View.OnClickListener {
     public void setMaxValue(int maxValue) {
         this.maxValue = maxValue;
         reset();
+    }
+
+    public void showResult() {
+        lnChooser.setVisibility(View.GONE);
+        frResult.setVisibility(View.VISIBLE);
+    }
+
+    public void hideResult() {
+        lnChooser.setVisibility(View.VISIBLE);
+        frResult.setVisibility(View.GONE);
+    }
+
+    public void updateResult(Bitmap bp1, Bitmap bp2, Bitmap bp3) {
+        ((ImageView) view.findViewById(R.id.imgResult1)).setImageBitmap(bp1);
+        ((ImageView) view.findViewById(R.id.imgResult2)).setImageBitmap(bp2);
+        ((ImageView) view.findViewById(R.id.imgResult3)).setImageBitmap(bp3);
+    }
+
+    public LinearLayout getBtnDisableRuleMain() {
+        return btnDisableRuleMain;
+    }
+
+    public LinearLayout getBtnDisableRule3() {
+        return btnDisableRule3;
+    }
+
+    public LinearLayout getBtnEnableRuleMain() {
+        return btnEnableRuleMain;
+    }
+
+    public LinearLayout getBtnEnableRule3() {
+        return btnEnableRule3;
     }
 }

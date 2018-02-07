@@ -60,27 +60,27 @@ public class PlayPresenter {
         return value + "k";
     }
 
-    public void onChoose(int[] valueArrays) {
+    public void onChoose(int[] valueArrays, int[] resultArrays) {
         for (int i = 0; i < valueArrays.length; i++) {
-            Log.d(TAG, "valueArrays : " + valueArrays[i]);
             moneyArrays[i] = (valueArrays[i] * currentMoney);
         }
+        calculateResult(resultArrays);
     }
 
-    public void resetMoneyArray(){
+    public void resetMoneyArray() {
         moneyArrays = new int[6];
     }
 
     public void setCurrentMoney(int currentMoney) {
+        Log.d(TAG, "setCurrentMoney : " + currentMoney);
         this.currentMoney = currentMoney;
     }
 
     public void calculateResult(int[] resultArrays) {
         tong = 0;
-        if (currentMoney>0){
+        if (currentMoney > 0) {
             int result[] = new int[6];
             for (int i = 0; i < moneyArrays.length; i++) {
-                Log.d(TAG, "Money : " + moneyArrays[i]);
                 for (int j = 0; j < resultArrays.length; j++) {
                     if (i == resultArrays[j]) {
                         result[i] = result[i] + 1;
@@ -111,11 +111,11 @@ public class PlayPresenter {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                checkingNetwork();
                 Task.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
                         checkingTime();
-                        checkingNetwork();
                     }
                 });
             }
@@ -134,18 +134,7 @@ public class PlayPresenter {
         }
 
         private void checkingNetwork() {
-            Log.d(TAG, "Checking network");
-            if (isOnline()) {
-                if (!isNetworkEnable) {
-                    isNetworkEnable = true;
-                    view.onNetworkChanged(isNetworkEnable);
-                }
-            } else {
-                if (isNetworkEnable) {
-                    isNetworkEnable = false;
-                    view.onNetworkChanged(isNetworkEnable);
-                }
-            }
+            view.onNetworkChanged(isOnline());
         }
     }
 
