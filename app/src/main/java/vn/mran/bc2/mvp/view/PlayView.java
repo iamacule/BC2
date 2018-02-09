@@ -12,4 +12,6 @@ public interface PlayView {
     void onResultExecute(int tong);
 
     void onAddMoney();
+
+    void startFireworks();
 }

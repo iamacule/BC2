@@ -3,9 +3,15 @@ package vn.mran.bc2.activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.plattysoft.leonids.ParticleSystem;
 
 import vn.mran.bc2.R;
 import vn.mran.bc2.base.BaseActivity;
@@ -20,6 +26,7 @@ import vn.mran.bc2.mvp.presenter.PlayPresenter;
 import vn.mran.bc2.mvp.view.PlayView;
 import vn.mran.bc2.util.MyAnimation;
 import vn.mran.bc2.util.ResizeBitmap;
+import vn.mran.bc2.util.ScreenUtil;
 import vn.mran.bc2.util.Task;
 import vn.mran.bc2.util.TouchEffect;
 import vn.mran.bc2.util.toast.Boast;
@@ -47,7 +54,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
 
     private TextView txtTime;
 
-    private DrawParallaxStar drawParallaxStar;
     private DrawPlay drawPlay;
 
     private AnimalChooserLayout animalChooserLayout;
@@ -64,6 +70,8 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
 
     private int currentMoney = 0;
 
+    private ParticleSystem ps;
+
     @Override
     public void initLayout() {
         hideStatusBar();
@@ -77,7 +85,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         txtTitle = findViewById(R.id.txtTitle);
         txtMoney = findViewById(R.id.txtMoney);
         txtTime = findViewById(R.id.txtTime);
-        drawParallaxStar = findViewById(R.id.drawParallaxStar);
         drawPlay = findViewById(R.id.drawPlay);
     }
 
@@ -85,7 +92,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
     public void initValue() {
         Rule.getInstance().setOnFireBaseDataChanged(this);
         presenter = new PlayPresenter(this);
-        drawParallaxStar.setStarSize((int) screenWidth / 10);
+        ((DrawParallaxStar) findViewById(R.id.drawParallaxStar)).setStarSize((int) screenWidth / 10);
 
         imgAction.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.button_background), screenWidth / 3));
 
@@ -153,12 +160,12 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         String ruleMainStatus = preferences.getStringValue(PrefValue.RULE_MAIN_PLAY_STATUS, PrefValue.DEFAULT_STATUS);
         if (ruleMainStatus.equals(Rule.getInstance().STATUS_ON)) {
             if (isEnableMainRuleBySecretKey) {
-                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 12));
+                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 8));
             } else {
-                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 12));
+                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 8));
             }
         } else {
-            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 12));
+            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 8));
 
         }
         imgBack.setImageBitmap(bpBack);
@@ -169,24 +176,24 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
     private void updateSoundImage() {
         //Child rule
 
-        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 12);
-        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 12);
+        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 8);
+        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 8);
 
         if (Rule.getInstance().isOnline()) {
             String ruleChildStatus = preferences.getStringValue(PrefValue.RULE_CHILD_PLAY_STATUS, PrefValue.DEFAULT_STATUS);
             if (ruleChildStatus.equals(Rule.getInstance().STATUS_ON)) {
                 switch (Rule.getInstance().getRuleChildRule()) {
                     case 1:
-                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_1), screenWidth / 12);
-                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_1), screenWidth / 12);
+                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_1), screenWidth / 8);
+                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_1), screenWidth / 8);
                         break;
                     case 2:
-                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_2), screenWidth / 12);
-                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_2), screenWidth / 12);
+                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_2), screenWidth / 8);
+                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_2), screenWidth / 8);
                         break;
                     case 3:
-                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_3), screenWidth / 12);
-                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_3), screenWidth / 12);
+                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_3), screenWidth / 8);
+                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_3), screenWidth / 8);
                         break;
                 }
             }
@@ -228,7 +235,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                                 bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 10));
                             }
                         } else {
-                            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 10));
+                            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 8));
                             setPreviousRule();
                             isEnableMainRuleBySecretKey = false;
                         }
@@ -244,7 +251,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                                 bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 10));
                             }
                         } else {
-                            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 10));
+                            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 8));
                             setPreviousRule();
                             isEnableMainRuleBySecretKey = false;
                         }
@@ -420,7 +427,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
 
     @Override
     public void onBackPressed() {
-        presenter.stopCheckingNetwork();
+        presenter.stopAllThread();
         super.onBackPressed();
     }
 
@@ -469,6 +476,35 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         currentMoney = currentMoney + 10;
         preferences.storeValue(PrefValue.MONEY, currentMoney);
         checkingMoney();
+    }
+
+    @Override
+    public void startFireworks() {
+        Log.d(TAG, "Start fireworks");
+        int marginMin = (int) screenWidth / 3;
+        int marginRightMax = (int) screenWidth * 2 / 3;
+        int marginBottomMax = (int) (screenHeight - (screenWidth / 3));
+
+        int marginLeft = ScreenUtil.getRandomNumber(marginMin, marginRightMax);
+        int marginTop = ScreenUtil.getRandomNumber(marginMin, marginBottomMax);
+
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) findViewById(R.id.fireworks).getLayoutParams();
+        params.setMargins(marginLeft, marginTop, 0, 0);
+        findViewById(R.id.fireworks).setLayoutParams(params);
+
+        ParticleSystem ps = new ParticleSystem(this, 100, R.drawable.fire_slot, 800);
+        ps.setScaleRange(0.7f, 1.3f);
+        ps.setSpeedRange(0.1f, 0.25f);
+        ps.setRotationSpeedRange(90, 180);
+        ps.setFadeOut(200, new AccelerateInterpolator());
+        ps.oneShot(findViewById(R.id.fireworks), 70);
+
+        ParticleSystem ps2 = new ParticleSystem(this, 100, R.drawable.fire_slot_2, 800);
+        ps2.setScaleRange(0.7f, 1.3f);
+        ps2.setSpeedRange(0.1f, 0.25f);
+        ps.setRotationSpeedRange(90, 180);
+        ps2.setFadeOut(200, new AccelerateInterpolator());
+        ps2.oneShot(findViewById(R.id.fireworks), 70);
     }
 
     @Override

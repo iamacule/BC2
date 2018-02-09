@@ -20,6 +20,8 @@ import vn.mran.bc2.model.RuleMain;
 import vn.mran.bc2.util.Preferences;
 import vn.mran.bc2.util.Task;
 
+import static vn.mran.bc2.util.ScreenUtil.getRandomNumber;
+
 /**
  * Created by Mr An on 20/12/2017.
  */
@@ -480,10 +482,6 @@ public class Rule {
 
     private int getRandomAnimalPosition() {
         return new Random().nextInt((5 - 0) + 1);
-    }
-
-    private int getRandomNumber(int min, int max) {
-        return new Random().nextInt((max - min) + 1);
     }
 
     public void minusRuleNumber(byte ruleType) {

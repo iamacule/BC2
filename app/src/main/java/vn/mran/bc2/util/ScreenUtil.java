@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Random;
 
 /**
  * Created by MrAn PC on 07-Feb-16.
@@ -61,5 +62,9 @@ public class ScreenUtil {
     //Get screen height
     public static float getScreenHeight(WindowManager windowManager){
         return getScreenDimentions(windowManager).y;
+    }
+
+    public static int getRandomNumber(int min, int max) {
+        return new Random().nextInt((max - min) + 1);
     }
 }

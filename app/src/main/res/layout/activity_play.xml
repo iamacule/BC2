@@ -10,75 +10,86 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v4.widget.Space
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.44">
-
-        </android.support.v4.widget.Space>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.10"
-            android:orientation="horizontal">
-
+            android:layout_weight="0.54">
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:gravity="center|bottom">
-
-                <ImageView
-                    android:id="@+id/imgBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.7"
-                android:gravity="center|bottom"
                 android:orientation="vertical">
 
-                <vn.mran.bc2.widget.CustomTextView
-                    android:id="@+id/txtMoney"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="-8dp"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:shadowColor="@color/black"
-                    android:shadowDx="3"
-                    android:shadowDy="3"
-                    android:shadowRadius="3"
-                    android:text="0000"
-                    android:textColor="@color/yellow_text"
-                    android:textSize="@dimen/txt_money_size" />
+                <android.support.v4.widget.Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.75">
 
-                <TextView
-                    android:id="@+id/txtTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/txtMoney"
-                    android:text="+10k"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_small_2" />
+                </android.support.v4.widget.Space>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.25"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.25"
+                        android:gravity="center|bottom">
+
+                        <ImageView
+                            android:id="@+id/imgBack"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:gravity="center|bottom"
+                        android:orientation="vertical">
+
+                        <vn.mran.bc2.widget.CustomTextView
+                            android:id="@+id/txtMoney"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="-8dp"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:shadowColor="@color/black"
+                            android:shadowDx="10"
+                            android:shadowDy="10"
+                            android:shadowRadius="10"
+                            android:text="0000"
+                            android:textColor="@android:color/holo_red_light"
+                            android:textSize="@dimen/txt_money_size" />
+
+                        <TextView
+                            android:id="@+id/txtTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/txtMoney"
+                            android:text="+10k"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small_2" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.25"
+                        android:gravity="center|bottom">
+
+                        <ImageView
+                            android:id="@+id/imgSound"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:gravity="center|bottom">
-
-                <ImageView
-                    android:id="@+id/imgSound"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-        </LinearLayout>
+        </FrameLayout>
 
 
         <LinearLayout
@@ -93,7 +104,6 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
             android:layout_weight="0.14">
 
             <FrameLayout
@@ -134,7 +144,7 @@
                 <android.support.v4.widget.Space
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.2"/>
+                    android:layout_weight="0.2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -236,7 +246,11 @@
         android:layout_gravity="center" />
 
     <vn.mran.bc2.draw.DrawParallaxStar
-    android:id="@+id/drawParallaxStar"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+        android:id="@+id/drawParallaxStar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:id="@+id/fireworks"
+        android:layout_width="1dp"
+        android:layout_height="1dp" />
 </FrameLayout>

@@ -2,7 +2,7 @@
 <resources>
     <dimen name="large_text_size">48sp</dimen>
     <dimen name="button_text_size_large_play">30sp</dimen>
-    <dimen name="txt_money_size">25sp</dimen>
+    <dimen name="txt_money_size">30sp</dimen>
     <dimen name="button_text_size">30sp</dimen>
     <dimen name="text_size">20sp</dimen>
     <dimen name="text_size_small">18sp</dimen>

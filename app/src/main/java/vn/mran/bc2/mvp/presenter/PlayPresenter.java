@@ -9,6 +9,7 @@ import java.util.Date;
 
 import vn.mran.bc2.helper.Log;
 import vn.mran.bc2.mvp.view.PlayView;
+import vn.mran.bc2.util.ScreenUtil;
 import vn.mran.bc2.util.Task;
 
 /**
@@ -38,13 +39,14 @@ public class PlayPresenter {
         isNetworkEnable = isOnline();
 
         new PlayThread().start();
+        new FireworkDelayThread().start();
     }
 
     public void setEnablePlusMoney(boolean enablePlusMoney) {
         isEnablePlusMoney = enablePlusMoney;
     }
 
-    public void stopCheckingNetwork() {
+    public void stopAllThread() {
         Log.d(TAG, "Stop checking network");
         run = false;
     }
@@ -135,6 +137,25 @@ public class PlayPresenter {
 
         private void checkingNetwork() {
             view.onNetworkChanged(isOnline());
+        }
+    }
+
+    private class FireworkDelayThread extends Thread {
+        @Override
+        public void run() {
+            while (run) {
+                try {
+                    Thread.sleep(ScreenUtil.getRandomNumber(3000,8000));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Task.runOnUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.startFireworks();
+                    }
+                });
+            }
         }
     }
 
