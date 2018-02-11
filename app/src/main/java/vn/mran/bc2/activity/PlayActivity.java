@@ -1,5 +1,6 @@
 package vn.mran.bc2.activity;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -488,7 +489,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         int marginLeft = ScreenUtil.getRandomNumber(marginMin, marginRightMax);
         int marginTop = ScreenUtil.getRandomNumber(marginMin, marginBottomMax);
 
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) findViewById(R.id.fireworks).getLayoutParams();
+        @SuppressLint("WrongViewCast") FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) findViewById(R.id.fireworks).getLayoutParams();
         params.setMargins(marginLeft, marginTop, 0, 0);
         findViewById(R.id.fireworks).setLayoutParams(params);
 
