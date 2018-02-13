@@ -64,9 +64,7 @@ public class AnimalChooserLayout implements View.OnClickListener {
     private int currentValue = 0;
 
     private LinearLayout btnDisableRuleMain;
-    private LinearLayout btnDisableRule3;
     private LinearLayout btnEnableRuleMain;
-    private LinearLayout btnEnableRule3;
 
     public void setOnAnimalChooseListener(OnAnimalChooseListener onAnimalChooseListener) {
         this.onAnimalChooseListener = onAnimalChooseListener;
@@ -80,9 +78,7 @@ public class AnimalChooserLayout implements View.OnClickListener {
 
 
         btnDisableRuleMain = (LinearLayout) view.findViewById(R.id.btnDisableRuleMain);
-        btnDisableRule3 = (LinearLayout) view.findViewById(R.id.btnDisableRule3);
         btnEnableRuleMain = (LinearLayout) view.findViewById(R.id.btnEnableRuleMain);
-        btnEnableRule3 = (LinearLayout) view.findViewById(R.id.btnEnableRule3);
 
         imgNai = view.findViewById(R.id.imgNai);
         imgBau = view.findViewById(R.id.imgBau);
@@ -247,15 +243,7 @@ public class AnimalChooserLayout implements View.OnClickListener {
         return btnDisableRuleMain;
     }
 
-    public LinearLayout getBtnDisableRule3() {
-        return btnDisableRule3;
-    }
-
     public LinearLayout getBtnEnableRuleMain() {
         return btnEnableRuleMain;
-    }
-
-    public LinearLayout getBtnEnableRule3() {
-        return btnEnableRule3;
     }
 }

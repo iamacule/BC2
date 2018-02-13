@@ -273,9 +273,9 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
             }
         };
         animalChooserLayout.getBtnDisableRuleMain().setOnClickListener(onDoubleClickListener);
-        animalChooserLayout.getBtnDisableRule3().setOnClickListener(onDoubleClickListener);
+        findViewById(R.id.btnEnableRule3).setOnClickListener(onDoubleClickListener);
         animalChooserLayout.getBtnEnableRuleMain().setOnClickListener(onDoubleClickListener);
-        animalChooserLayout.getBtnEnableRule3().setOnClickListener(onDoubleClickListener);
+        findViewById(R.id.btnDisableRule3).setOnClickListener(onDoubleClickListener);
 
         //Set result at first time
         setResult();

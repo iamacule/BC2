@@ -1,57 +1,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/frResult"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="5">
-
-                <LinearLayout
-                    android:id="@+id/btnDisableRuleMain"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5" />
-
-                <LinearLayout
-                    android:id="@+id/btnDisableRule3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="5">
-
-                <LinearLayout
-                    android:id="@+id/btnEnableRuleMain"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5" />
-
-                <LinearLayout
-                    android:id="@+id/btnEnableRule3"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5" />
-            </LinearLayout>
-        </LinearLayout>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,9 +30,9 @@
 
             <FrameLayout
                 android:layout_width="0dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1">
 
                 <ImageView
@@ -101,12 +58,13 @@
 
     <LinearLayout
         android:id="@+id/lnChooser"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -355,4 +313,18 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/btnEnableRuleMain"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@color/blue_700"/>
+
+
+    <LinearLayout
+        android:id="@+id/btnDisableRuleMain"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center|right"
+        android:background="@color/blue_700"/>
 </FrameLayout>
