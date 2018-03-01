@@ -314,17 +314,8 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/btnEnableRuleMain"
+        android:id="@+id/btnRuleMain"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:background="@color/blue_700"/>
-
-
-    <LinearLayout
-        android:id="@+id/btnDisableRuleMain"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center|right"
-        android:background="@color/blue_700"/>
+        android:layout_gravity="center"/>
 </FrameLayout>

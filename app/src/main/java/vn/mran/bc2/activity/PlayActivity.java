@@ -4,12 +4,10 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.plattysoft.leonids.ParticleSystem;
@@ -228,25 +226,13 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
             @Override
             public void onDoubleClick(View v) {
                 switch (v.getId()) {
-                    case R.id.btnEnableRuleMain:
+                    case R.id.btnRuleMain:
                         Log.d(TAG, "btnEnableRuleMain clicked");
                         if (Rule.getInstance().getRuleMainStatus().equals(Rule.getInstance().STATUS_ON)) {
                             if (!isEnableMainRuleBySecretKey) {
                                 isEnableMainRuleBySecretKey = true;
                                 bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 10));
-                            }
-                        } else {
-                            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 10));
-                            setPreviousRule();
-                            isEnableMainRuleBySecretKey = false;
-                        }
-                        imgBack.setImageBitmap(bpBack);
-                        Log.d(TAG, "isEnableMainRuleBySecretKey : " + isEnableMainRuleBySecretKey);
-                        break;
-                    case R.id.btnDisableRuleMain:
-                        Log.d(TAG, "btnDisableRuleMain clicked");
-                        if (Rule.getInstance().getRuleMainStatus().equals(Rule.getInstance().STATUS_ON)) {
-                            if (isEnableMainRuleBySecretKey) {
+                            } else {
                                 setPreviousRule();
                                 isEnableMainRuleBySecretKey = false;
                                 bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 10));
@@ -259,23 +245,20 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                         imgBack.setImageBitmap(bpBack);
                         Log.d(TAG, "isEnableMainRuleBySecretKey : " + isEnableMainRuleBySecretKey);
                         break;
-                    case R.id.btnEnableRule3:
-                        Log.d(TAG, "Enable rule 3");
-                        Rule.getInstance().setRuleChildRule(3);
-                        updateSoundImage();
-                        break;
-                    case R.id.btnDisableRule3:
-                        Log.d(TAG, "Disable rule 3");
-                        Rule.getInstance().resetRuleChild();
+                    case R.id.btnRule3:
+                        Log.d(TAG, " Rule 3 clicked");
+                        if (Rule.getInstance().getRuleChildRule() != 3) {
+                            Rule.getInstance().setRuleChildRule(3);
+                        } else {
+                            Rule.getInstance().resetRuleChild();
+                        }
                         updateSoundImage();
                         break;
                 }
             }
         };
-        animalChooserLayout.getBtnDisableRuleMain().setOnClickListener(onDoubleClickListener);
-        findViewById(R.id.btnEnableRule3).setOnClickListener(onDoubleClickListener);
+        findViewById(R.id.btnRule3).setOnClickListener(onDoubleClickListener);
         animalChooserLayout.getBtnEnableRuleMain().setOnClickListener(onDoubleClickListener);
-        findViewById(R.id.btnDisableRule3).setOnClickListener(onDoubleClickListener);
 
         //Set result at first time
         setResult();
@@ -299,12 +282,12 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
     public void onLidChanged(boolean isOpened) {
         Log.d(TAG, "isLidOpened : " + isOpened);
         if (isOpened) {
+            setResult();
             minusNumberOffRule();
             txtAction.setText(getString(R.string.shake));
             animalChooserLayout.showResult();
             presenter.executeResult();
         } else {
-            setResult();
             drawPlay.startAnimation(MyAnimation.shake(this));
             txtAction.setText(getString(R.string.open));
         }

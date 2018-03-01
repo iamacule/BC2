@@ -1,9 +1,12 @@
 package vn.mran.bc2.activity;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.plattysoft.leonids.ParticleSystem;
 
@@ -34,6 +37,17 @@ public class ChooserActivity extends BaseActivity implements View.OnClickListene
     public void initValue() {
         TouchEffect.addAlpha(imgPlay);
         TouchEffect.addAlpha(imgExit);
+
+        setVersion();
+    }
+
+    private void setVersion() {
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            ((TextView) findViewById(R.id.txtVersion)).setText("v" + pInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

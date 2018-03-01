@@ -45,37 +45,16 @@
                             android:layout_weight="0.5" />
 
                         <LinearLayout
-                            android:id="@+id/btnEnableRule3"
+                            android:id="@+id/btnRule3"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:background="@color/white" />
+                            android:layout_weight="0.5"/>
                     </LinearLayout>
 
                     <android.support.v4.widget.Space
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.5" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.25"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:id="@+id/btnDisableRule3"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5"
-                            android:background="@color/white" />
-
-
-                        <android.support.v4.widget.Space
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.5" />
-                    </LinearLayout>
+                        android:layout_weight="0.75" />
                 </LinearLayout>
 
                 <LinearLayout
