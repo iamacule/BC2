@@ -288,6 +288,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
             animalChooserLayout.showResult();
             presenter.executeResult();
         } else {
+            animalChooserLayout.hideResult();
             drawPlay.startAnimation(MyAnimation.shake(this));
             txtAction.setText(getString(R.string.open));
         }
@@ -306,7 +307,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         resultArrays = Rule.getInstance().getResult();
         drawPlay.setResultArrays(resultArrays);
         animalChooserLayout.updateResult(bpResultArray[resultArrays[0]], bpResultArray[resultArrays[1]], bpResultArray[resultArrays[2]]);
-        animalChooserLayout.hideResult();
     }
 
     @Override
