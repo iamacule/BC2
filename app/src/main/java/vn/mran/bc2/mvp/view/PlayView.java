@@ -5,8 +5,6 @@ package vn.mran.bc2.mvp.view;
  */
 
 public interface PlayView {
-    void onNetworkChanged(boolean isEnable);
-
     void onTimeChanged(String value);
 
     void onResultExecute(int tong);

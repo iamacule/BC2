@@ -23,8 +23,6 @@ public class PlayPresenter {
 
     private PlayView view;
 
-    private boolean isNetworkEnable = false;
-
     private boolean run = true;
 
     private boolean isEnablePlusMoney = false;
@@ -36,7 +34,6 @@ public class PlayPresenter {
     public PlayPresenter(PlayView view) {
         this.context = (Context) view;
         this.view = view;
-        isNetworkEnable = isOnline();
 
         new PlayThread().start();
         new FireworkDelayThread().start();
@@ -51,13 +48,6 @@ public class PlayPresenter {
         run = false;
     }
 
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
     public String updateMoneyValue(int value) {
         return value + "k";
     }
@@ -67,10 +57,6 @@ public class PlayPresenter {
             moneyArrays[i] = (valueArrays[i] * currentMoney);
         }
         calculateResult(resultArrays);
-    }
-
-    public void resetMoneyArray() {
-        moneyArrays = new int[6];
     }
 
     public void setCurrentMoney(int currentMoney) {
@@ -113,7 +99,6 @@ public class PlayPresenter {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                checkingNetwork();
                 Task.runOnUIThread(new Runnable() {
                     @Override
                     public void run() {
@@ -134,10 +119,6 @@ public class PlayPresenter {
                 view.onTimeChanged("");
             }
         }
-
-        private void checkingNetwork() {
-            view.onNetworkChanged(isOnline());
-        }
     }
 
     private class FireworkDelayThread extends Thread {
@@ -157,19 +138,5 @@ public class PlayPresenter {
                 });
             }
         }
-    }
-
-    public String updateText(String oldText) {
-        if (oldText.length() * 2 < 90) {
-            StringBuilder stringBuilder = new StringBuilder(oldText);
-            for (int i = stringBuilder.length() * 2; i <= 90; i++) {
-
-                stringBuilder.append(" ");
-            }
-
-            stringBuilder.append(oldText);
-            return stringBuilder.toString();
-        }
-        return oldText;
     }
 }

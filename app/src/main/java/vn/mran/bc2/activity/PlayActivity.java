@@ -36,7 +36,7 @@ import vn.mran.bc2.widget.CustomTextView;
  * Created by Mr An on 18/12/2017.
  */
 
-public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpdate, View.OnClickListener, PlayView, Rule.OnFireBaseDataChanged {
+public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpdate, View.OnClickListener, PlayView {
     private static final int MONEY_VALUE = 100;
     private final String TAG = getClass().getSimpleName();
 
@@ -89,7 +89,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
 
     @Override
     public void initValue() {
-        Rule.getInstance().setOnFireBaseDataChanged(this);
         presenter = new PlayPresenter(this);
         ((DrawParallaxStar) findViewById(R.id.drawParallaxStar)).setStarSize((int) screenWidth / 10);
 
@@ -153,7 +152,7 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
 
     private void initUIFromFirebase() {
         //Text
-        updateText(Rule.getInstance().getText());
+        txtTitle.setText("Chúc các bạn chơi vui vẻ !                                  ");
 
         //Main rule
         String ruleMainStatus = preferences.getStringValue(PrefValue.RULE_MAIN_PLAY_STATUS, PrefValue.DEFAULT_STATUS);
@@ -164,7 +163,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                 bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 10));
             }
         } else {
-            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 10));
 
         }
         imgBack.setImageBitmap(bpBack);
@@ -173,30 +171,8 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
     }
 
     private void updateSoundImage() {
-        //Child rule
-
         bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on), screenWidth / 10);
         bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off), screenWidth / 10);
-
-        if (Rule.getInstance().isOnline()) {
-            String ruleChildStatus = preferences.getStringValue(PrefValue.RULE_CHILD_PLAY_STATUS, PrefValue.DEFAULT_STATUS);
-            if (ruleChildStatus.equals(Rule.getInstance().STATUS_ON)) {
-                switch (Rule.getInstance().getRuleChildRule()) {
-                    case 1:
-                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_1), screenWidth / 10);
-                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_1), screenWidth / 10);
-                        break;
-                    case 2:
-                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_2), screenWidth / 10);
-                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_2), screenWidth / 10);
-                        break;
-                    case 3:
-                        bpSoundOn = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_on_3), screenWidth / 10);
-                        bpSoundOff = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.sound_off_3), screenWidth / 10);
-                        break;
-                }
-            }
-        }
 
         Task.runOnUIThread(new Runnable() {
             @Override
@@ -228,31 +204,16 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
                 switch (v.getId()) {
                     case R.id.btnRuleMain:
                         Log.d(TAG, "btnEnableRuleMain clicked");
-                        if (Rule.getInstance().getRuleMainStatus().equals(Rule.getInstance().STATUS_ON)) {
-                            if (!isEnableMainRuleBySecretKey) {
-                                isEnableMainRuleBySecretKey = true;
-                                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 10));
-                            } else {
-                                setPreviousRule();
-                                isEnableMainRuleBySecretKey = false;
-                                bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 10));
-                            }
+                        if (!isEnableMainRuleBySecretKey) {
+                            isEnableMainRuleBySecretKey = true;
+                            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_on), screenWidth / 10));
                         } else {
-                            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back), screenWidth / 10));
                             setPreviousRule();
                             isEnableMainRuleBySecretKey = false;
+                            bpBack = (ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.back_main_on_secret_off), screenWidth / 10));
                         }
                         imgBack.setImageBitmap(bpBack);
                         Log.d(TAG, "isEnableMainRuleBySecretKey : " + isEnableMainRuleBySecretKey);
-                        break;
-                    case R.id.btnRule3:
-                        Log.d(TAG, " Rule 3 clicked");
-                        if (Rule.getInstance().getRuleChildRule() != 3) {
-                            Rule.getInstance().setRuleChildRule(3);
-                        } else {
-                            Rule.getInstance().resetRuleChild();
-                        }
-                        updateSoundImage();
                         break;
                 }
             }
@@ -283,7 +244,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         Log.d(TAG, "isLidOpened : " + isOpened);
         if (isOpened) {
             setResult();
-            minusNumberOffRule();
             txtAction.setText(getString(R.string.shake));
             animalChooserLayout.showResult();
             presenter.executeResult();
@@ -292,12 +252,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
             drawPlay.startAnimation(MyAnimation.shake(this));
             txtAction.setText(getString(R.string.open));
         }
-    }
-
-    private void minusNumberOffRule() {
-        Rule.getInstance().minusRuleNumber(Rule.getInstance().RULE_NORMAL);
-        if (isEnableMainRuleBySecretKey)
-            Rule.getInstance().minusRuleNumber(Rule.getInstance().RULE_MAIN);
     }
 
     /**
@@ -416,16 +370,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
     }
 
     @Override
-    public void onNetworkChanged(boolean isEnable) {
-        Log.d(TAG, "Network : " + isEnable);
-        Rule.getInstance().setOnline(isEnable);
-        updateSoundImage();
-
-        //TODO ????
-//        updateText(preferences.getStringValue(PrefValue.TEXT, PrefValue.DEFAULT_TEXT));
-    }
-
-    @Override
     public void onTimeChanged(String value) {
         txtTime.setText(value);
     }
@@ -489,24 +433,5 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         ps.setRotationSpeedRange(90, 180);
         ps2.setFadeOut(200, new AccelerateInterpolator());
         ps2.oneShot(findViewById(R.id.fireworks), 70);
-    }
-
-    @Override
-    public void onTextChanged(String text) {
-        updateText(text);
-    }
-
-    private void updateText(final String text) {
-        Task.runOnUIThread(new Runnable() {
-            @Override
-            public void run() {
-                txtTitle.setText(presenter.updateText(text));
-            }
-        });
-    }
-
-    @Override
-    public void onDataChanged() {
-        initUIFromFirebase();
     }
 }
