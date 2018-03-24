@@ -61,7 +61,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
     private Bitmap bpSoundOff;
     private Bitmap bpBack;
 
-    private Bitmap[] bpChooserArray = new Bitmap[6];
     private Bitmap[] bpResultArray = new Bitmap[6];
     private int[] resultArrays;
 
@@ -97,13 +96,6 @@ public class PlayActivity extends BaseActivity implements DrawPlay.OnDrawLidUpda
         TouchEffect.addAlpha(imgAction);
         TouchEffect.addAlpha(imgBack);
         TouchEffect.addAlpha(imgSound);
-
-        bpChooserArray[0] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.bau), screenWidth / 4);
-        bpChooserArray[1] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.cua), screenWidth / 4);
-        bpChooserArray[2] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.tom), screenWidth / 4);
-        bpChooserArray[3] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.ca), screenWidth / 4);
-        bpChooserArray[4] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.ga), screenWidth / 4);
-        bpChooserArray[5] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.nai), screenWidth / 4);
 
         bpResultArray[0] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.bau), screenWidth / 4);
         bpResultArray[1] = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.cua), screenWidth / 4);

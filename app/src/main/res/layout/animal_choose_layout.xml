@@ -315,7 +315,7 @@
 
     <LinearLayout
         android:id="@+id/btnRuleMain"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center"/>
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="top|right"/>
 </FrameLayout>
